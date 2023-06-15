@@ -1,0 +1,158 @@
+#include<stdio.h>
+#include <stdlib.h>
+#include<stdbool.h>
+
+#define MAX 100
+
+typedef struct 
+{
+    int cod_aluno;
+    char *nome;
+    int idade;
+} ALUNO;
+
+typedef struct
+{
+    ALUNO alun;
+    int proximo;
+} ELEMENTO;
+
+typedef struct
+{
+    ELEMENTO turma[MAX];
+    int inicio;
+    int disponivel;
+} LISTA_MATRICULA;
+
+void inicializarLista(LISTA_MATRICULA *m)
+{
+    int i;
+    
+    for(i=0; i<MAX-1; i++)
+    {
+        m->turma[i].proximo=i+1;
+    }
+    
+    m->turma[MAX-1].proximo=-1; //inicializando o final da LISTA
+    m->inicio=-1;
+    m->disponivel=0;
+}
+
+//retornar qtd de elmentos validos na lista(tamanho)
+
+int tamanho(LISTA_MATRICULA *m)
+{
+    int tam;
+    int i;
+    
+    while(i!=-1)
+    {
+        tam++;
+        m->turma[i].proximo;
+    }
+    
+    return tam;
+}
+
+//retornar se a list esta cheia
+void cheiaOuVazia(int tam)
+{
+    if(tam==100)
+    {
+        printf("CHEIA");
+    }
+    else if(tam==0)
+    {
+        printf("vazia");
+    }
+}
+
+void exibirElementos(LISTA_MATRICULA *m)
+{
+    int i=m->inicio;
+    while(i!=-1){
+    printf("LISTA DE ALUNOS");
+    
+    printf("aluno: %d", i);
+    printf("codigo: %d", m->turma[i].alun.cod_aluno);
+    printf("nome: %s", m->turma[i].alun.nome);
+    printf("idade: %d", m->turma[i].alun.idade);
+    i=m->turma[i].proximo; //p incrementar o valolr de i
+    }
+}
+
+//inserir um lemento e form ordenada 
+
+//encontrar posicao disponivel
+int obterNo(LISTA_MATRICULA *m)
+{
+    int disp=m->disponivel;
+    
+    while(m->disponivel!=-1)
+    {
+        m->disponivel=m->turma[disp].proximo;
+    }
+    return disp; //roda eqt n chegar no final da lista  e o retorno vai ser a posiçao livre ACHO antes de acabar a lista LISTA_MATRICULA
+     // -1 é o ultimo na ordem logica então é p que t livreeeeee    livreeeeee
+}
+
+//INSERIR ELEMENTO
+bool inserirAluno(LISTA_MATRICULA *m, ALUNO novo_aluno)
+{
+    if(m->disponivel==-1)
+    {
+        return false;
+    }
+    
+    int i=m->inicio;
+    int pos_inserir=-1;
+    
+    while((i!=-1) && (novo_aluno.cod_aluno>m->turma[i].alun.cod_aluno))
+    {
+        pos_inserir=i;
+        i=m->turma[i].proximo;
+    } //se o cod do aluno q quer inserir for maior q  codigo do da posicao atual ent a posicao de inserir vai ser a proxima
+    
+    if((i!=-1) && (novo_aluno.cod_aluno==m->turma[pos_inserir].alun.cod_aluno))
+    {
+        return false;
+    }
+    
+    i=obterNo(&m);
+    m->turma[i].alun = novo_aluno;
+    
+    if(pos_inserir==1)
+    {
+        m->turma[i].proximo=m->inicio;
+        m->inicio=i;
+    }
+    else{
+        m->turma[i].proximo=m->turma[pos_inserir].proximo;
+        m->turma[pos_inserir].proximo=i;
+    }
+}
+int main() {
+    LISTA_MATRICULA m;
+    inicializarLista(&m);
+    printf("%d", tamanho(&m));
+    
+    ALUNO a;
+    
+    a.cod_aluno=22;
+    a.nome="karla";
+    a.idade=23;
+    inserirAluno(&m, a);
+    
+    a.cod_aluno=20;
+    a.nome="luis";
+    a.idade=23;
+    inserirAluno(&m, a);
+    
+    a.cod_aluno=33;
+    a.nome="israel";
+    a.idade=24;
+    inserirAluno(&m, a);
+    
+    exibirElementos(&m);
+     return 0;
+}
