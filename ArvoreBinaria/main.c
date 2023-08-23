@@ -1,51 +1,67 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include"arvorebinaria.h"
+#include "ArvoreBinaria.h"
 
 int main()
 {
-        ARVORE arvore;
-        inicializar(&arvore);
+    ARVORE a;
+    //NO nomain;
 
-        int Nmain;
+    inicializar(&a);
 
-        Nmain=24;
-        ELEMENTO * novo1=criarNo(Nmain);
-        adicionar(&arvore, novo1);
+    inserirARV2(&a, 9);
+    inserirARV2(&a, 8);
+    inserirARV2(&a, 5);
+    inserirARV2(&a, 3);
+    inserirARV2(&a, 10);
+    inserirARV2(&a, 12);
 
-        Nmain=10;
-        ELEMENTO * novo2=criarNo(Nmain);
-        adicionar(&arvore, novo2);
 
-        Nmain=32;
-        ELEMENTO * novo3=criarNo(Nmain);
-        adicionar(&arvore, novo3);
 
-        Nmain=5;
-        ELEMENTO * novo4=criarNo(Nmain);
-        adicionar(&arvore, novo4);
+    printf("-------------listar arvore pre ordem------------ \n");
+    listarPREORDEM(a.raiz);
+    printf("\n in-ordem: \n");
+    listarINORDEM(a.raiz);
+    printf("\n pos ordem: \n");
+    listarPOSORDEM(a.raiz);
 
-        Nmain=12;
-        ELEMENTO * novo5=criarNo(Nmain);
-        adicionar(&arvore, novo5);
+    printf("------------------------------------- \n");
 
-        Nmain=29;
-        ELEMENTO * novo6=criarNo(Nmain);
-        adicionar(&arvore, novo6);
+    printf("-------------buscando---------------- \n");
+    NO* busca_resultado=buscaARV(&a, 12);
 
-        Nmain=35;
-        ELEMENTO * novo7=criarNo(Nmain);
-        adicionar(&arvore, novo7);
+    printf("valor %d encontrado \n", busca_resultado->valor);
 
-        listararvore(&arvore);
+    printf("------------------------------------- \n");
 
-        int num=Contador(arvore.raiz);
-        printf(" \n quantidade de elementos na arvore: %d", num);
+    int qtdnos=contarNOS(a.raiz);
+    printf("a arvore tem %d nos \n", qtdnos);
 
-        printf("\n pré-ordem: \n");
-        listarPreOrdem(arvore.raiz);
+    printf("----------------------------- \n");
+    int alturaarv=altura(a.raiz);
+    printf("a altura da arvore e %d \n",alturaarv);
 
-        printf("\n pós orem: \n");
-        listarPosOrdem(arvore.raiz);
-        return 0;
+    int profundidade = profundidadeNO(a.raiz, 12);
+    if (profundidade != -1) {
+        printf("Profundidade do no %d: %d\n", 12, profundidade);
+    } else {
+        printf("No %d nao encontrado na arvore.\n", 12);
+    }
+
+    printf("---------------------apagando numero %d----------------- \n", 5);
+    if(excluirno(a.raiz, 5)==1)
+    {
+        printf("numero %d excluido \n", 5);
+        printf("------------nova arvore------------ \n");
+        listarPREORDEM(a.raiz);
+    }
+    else
+    {
+        printf("exclusão mal sucedida");
+    }
+
+
+
+    return 0;
+
 }
